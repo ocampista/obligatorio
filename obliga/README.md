@@ -26,8 +26,9 @@ Desde la carpeta **backend**:
 python app.py
 ```
 
-El servidor iniciará en:  
+El servidor iniciará en:
 http://127.0.0.1:5000/
+Y debe abrir index.html mediante Live Server
 
 ## Endpoints principales
 - `GET /participantes`  

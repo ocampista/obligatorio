@@ -124,7 +124,7 @@ function crearReserva() {
 function registrarAsistencia() {
     const id = document.getElementById("id_reserva").value;
     const ci = document.getElementById("ci_participante").value;
-    const asistio = document.getElementById("asistio").value;
+    const asistio = Number(document.getElementById("asistio").value);
 
     fetch(`${API}/reservas/${id}/asistencia`, {
         method: "POST",
@@ -176,4 +176,70 @@ function verDisponibilidad() {
         .then(data => {
             document.getElementById("resultado").innerText = JSON.stringify(data, null, 2);
         });
+}
+
+function modificarParticipante() {
+    const ci = document.getElementById("ci_mod").value;
+    const nombre = document.getElementById("nombre_mod").value;
+    const apellido = document.getElementById("apellido_mod").value;
+    const email = document.getElementById("email_mod").value;
+
+    fetch(`${API}/participantes/${ci}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ nombre, apellido, email })
+    })
+    .then(r => r.json())
+    .then(data => alert(data.mensaje || data.error))
+    .catch(err => alert("Error al modificar participante"));
+}
+
+function eliminarParticipante() {
+    const ci = document.getElementById("ci_eliminar").value;
+
+    fetch(`${API}/participantes/${ci}`, {
+        method: "DELETE"
+    })
+    .then(r => r.json())
+    .then(data => alert(data.mensaje || data.error))
+    .catch(err => alert("Error al eliminar participante"));
+}
+
+function modificarSala() {
+    const nombre = document.getElementById("sal_mod_nombre").value;
+    const edificio = document.getElementById("sal_mod_edificio").value;
+    const capacidad = document.getElementById("sal_mod_capacidad").value;
+    const tipo_sala = document.getElementById("sal_mod_tipo").value;
+
+    fetch(`${API}/salas/${nombre}/${edificio}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ capacidad, tipo_sala })
+    })
+    .then(r => r.json())
+    .then(data => alert(data.mensaje || data.error))
+    .catch(err => alert("Error al modificar sala"));
+}
+
+function eliminarSala() {
+    const nombre = document.getElementById("sal_del_nombre").value;
+    const edificio = document.getElementById("sal_del_edificio").value;
+
+    fetch(`${API}/salas/${nombre}/${edificio}`, {
+        method: "DELETE"
+    })
+    .then(r => r.json())
+    .then(data => alert(data.mensaje || data.error))
+    .catch(err => alert("Error al eliminar sala"));
+}
+
+function eliminarReserva() {
+    const id = document.getElementById("res_del_id").value;
+
+    fetch(`${API}/reservas/${id}`, {
+        method: "DELETE"
+    })
+    .then(r => r.json())
+    .then(data => alert(data.mensaje || data.error))
+    .catch(err => alert("Error al eliminar reserva"));
 }

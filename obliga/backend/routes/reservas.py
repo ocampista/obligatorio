@@ -227,10 +227,14 @@ def eliminar_reserva(id_reserva):
 def registrar_asistencia(id_reserva):
     data = request.get_json()
     ci = data.get("ci_participante")
-    asistio = data.get("asistio")
+    asistio_raw = data.get("asistio")   # puede venir como string "0" o "1"
 
-    if ci is None or asistio is None:
+    if ci is None or asistio_raw is None:
         return jsonify({"error": "Faltan datos para registrar asistencia."}), 400
+
+    # 🔥 Conversión segura:
+    # solo "1" o 1 es True — todo lo demás es False
+    asistio = True if asistio_raw == 1 or str(asistio_raw) == "1" else False
 
     conn = obtener_conexion()
     cur = conn.cursor()
@@ -252,7 +256,6 @@ def registrar_asistencia(id_reserva):
     finally:
         cur.close()
         conn.close()
-
 
 # ============================================================
 # ======================= FINALIZAR RESERVA ==================
